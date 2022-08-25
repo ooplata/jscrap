@@ -1,6 +1,7 @@
 package ui;
 
 import scraper.WebContentHelper;
+import ui.dialogs.ScrapResultDialog;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,7 +21,8 @@ public class MainForm {
         root.setBorder(new CompoundBorder(border, margin));
 
         scrapButton.addActionListener(e -> {
-            System.out.println(WebContentHelper.GetWebContent(urlInput.getText()));
+            String html = WebContentHelper.GetWebContent(urlInput.getText());
+            ScrapResultDialog.Show(html);
         });
     }
 
