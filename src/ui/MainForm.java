@@ -1,5 +1,7 @@
 package ui;
 
+import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import scraper.WebContentHelper;
 import ui.dialogs.ScrapResultDialog;
 
@@ -11,7 +13,6 @@ import java.awt.*;
 
 public class MainForm {
     private JPanel root;
-    private JLabel title;
     private JTextField urlInput;
     private JButton scrapButton;
 
@@ -22,7 +23,20 @@ public class MainForm {
 
         scrapButton.addActionListener(e -> {
             String html = WebContentHelper.GetWebContent(urlInput.getText());
-            ScrapResultDialog.Show(html);
+
+            var doc = Jsoup.parse(html, "", Parser.xmlParser());
+            for (var element : doc.getAllElements()) {
+                if (!element.ownText().isEmpty())
+                    for (var node : element.textNodes())
+                        node.remove();
+
+                element.clearAttributes();
+            }
+
+            for (var element : doc.getElementsByTag("style"))
+                element.text("");
+
+            ScrapResultDialog.Show(doc);
         });
     }
 
