@@ -40,7 +40,7 @@ public class MainForm {
         });
     }
 
-    public static void main(String[] args) {
+    public static void open() {
         var frame = new JFrame("JScraper");
         var form = new MainForm();
 
